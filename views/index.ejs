@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Mini Weather App</title>
+</head>
+<body>
+    <h1>Mini Weather App</h1>
+    <% if(!results.error){ %>
+        <ul>
+            <li>Date: <%= results.date %></li>
+            <li>Location: <%= results.location %></li>
+            <li>Lows (c): <%= results.min_temp %></li>
+            <li>Highs (c): <%= results.max_temp %></li>
+        </ul>
+    <% } %>
+    <form action="/addWeather" method="POST">
+        <input type="text" name="newLocation" placeholder="search location">
+        <button>Search</button>
+    </form>
+</body>
+</html>
