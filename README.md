@@ -1,4 +1,4 @@
-# Mini Weather App
+Mini Weather App
 ================================================================================
 
 A miniature node.js weather app. A simple location search will get you weather 
