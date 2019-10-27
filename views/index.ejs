@@ -6,7 +6,8 @@
 </head>
 <body>
     <h1>Mini Weather App</h1>
-    <% if(!results.error){ %>
+    
+    <% if(typeof results != "undefined" && !results.error){ %>
         <ul>
             <li>Date: <%= results.date %></li>
             <li>Location: <%= results.location %></li>
@@ -14,7 +15,15 @@
             <li>Highs (c): <%= results.max_temp %></li>
         </ul>
     <% } %>
-    <form action="/addWeather" method="POST">
+
+    <% if(typeof newLocation != "undefined" && (typeof results == "undefined" || results.error)){ %>
+        <ul>
+            <li>Could not find weather data on: <%= newLocation %></li>
+            <li>Either bad search parameter or bad api call.</li>
+        </ul>
+    <% } %>
+
+    <form action="/dispWeather" method="POST">
         <input type="text" name="newLocation" placeholder="search location">
         <button>Search</button>
     </form>

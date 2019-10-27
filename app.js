@@ -52,6 +52,7 @@ var weatherModule = (function(){
             .catch( (err)=>{
                 console.error(err);
                 results.error=true;
+                _callback();
             });
         }
         else if(callback==null){
@@ -61,6 +62,7 @@ var weatherModule = (function(){
         else{
             console.error("  __Invalid search input");
             results.error=true;
+            _callback();
         }
     }
 
@@ -87,6 +89,7 @@ var weatherModule = (function(){
         .catch( (err)=>{
             console.error("  __Bad WOEID query");
             results.error=true;
+            _callback();
         });
     }
 
@@ -96,10 +99,22 @@ var weatherModule = (function(){
     };
 }());
 
-app.post("/addWeather",function(req,res){
-    weatherModule.query(req.body.newLocation,()=>{return res.redirect("/");});
+//first middleWare to call api with input
+app.use("/dispWeather",function(req,res,next){
+    res.locals.newLocation = req.body.newLocation;
+    weatherModule.query(req.body.newLocation,next);
+});
+
+//second middleWare to set res.locals
+app.use("/dispWeather",function(req,res,next){
+    res.locals.results = weatherModule.results;
+    next();
+});
+
+app.post("/dispWeather",function(req,res){
+    res.render("index");
 });
 
 app.get("/",function(req,res){
-    res.render("index",{results: weatherModule.results});
+    res.render("index");
 });
